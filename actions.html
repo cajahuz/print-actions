@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Action Recorded</title></head>
+<body>
+  <h1>✅ Action Recorded</h1>
+  <p>Redirecting to thank-you page...</p>
+  <script>
+    // Forward to your n8n webhook
+    const url = new URL(window.location);
+    const params = new URLSearchParams(url.search);
+    const job = params.get('job');
+    const action = params.get('action');
+    const person = params.get('person');
+    
+    // Send to n8n
+    fetch('/webhook/actions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ job, action, person })
+    }).then(() => {
+      setTimeout(() => {
+        window.location.href = '/thank-you';
+      }, 500);
+    });
+  </script>
+</body>
+</html>
